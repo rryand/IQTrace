@@ -17,21 +17,26 @@ class IQTDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.check_box),
             title: Text('Update Symptoms'),
+            onTap: () => Navigator.pushNamed(context, '/update'),
           ),
           ListTile(
             leading: Icon(Icons.qr_code_scanner),
             title: Text('QR Scanner'),
+            onTap: () {},
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
-            child: Divider(
+          if (user.isAdmin) ...[
+            Divider(
+              indent: 24.0,
+              endIndent: 24.0,
+              height: 1.0,
               thickness: 1.0,
             ),
-          ),
-          ListTile(
-            leading: Icon(Icons.admin_panel_settings),
-            title: Text('Admin'),
-          ),
+            ListTile(
+              leading: Icon(Icons.admin_panel_settings),
+              title: Text('Admin'),
+              onTap: () {},
+            ),
+          ],
         ],
       ),
     );

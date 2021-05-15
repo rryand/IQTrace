@@ -9,7 +9,6 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({required this.title});
 
   final String title;
-
   final User user = User(
     'Ramses Ryan',
     'Dineros',
@@ -19,6 +18,7 @@ class HomeScreen extends StatelessWidget {
     '09294137458',
     'ramsesryandinerosramsesryandineros@gmail.com',
     'http://FAKEURL.com',
+    true,
   );
 
   @override

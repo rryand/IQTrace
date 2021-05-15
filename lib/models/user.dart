@@ -8,6 +8,7 @@ class User {
   final String contactNumber;
   final String email;
   final String portraitUrl;
+  final bool isAdmin;
 
   String get name {
     return firstName + ' ' + lastName;
@@ -26,6 +27,7 @@ class User {
     this.contactNumber,
     this.email,
     this.portraitUrl,
+    this.isAdmin,
   );
 
   Map<String, dynamic> toJson() => {
