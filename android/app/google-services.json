@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "98162556515",
+    "project_id": "iq-trace",
+    "storage_bucket": "iq-trace.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98162556515:android:a827c8cd6bee5adf690256",
+        "android_client_info": {
+          "package_name": "com.dins.iqtrace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98162556515-sml927i5bq70nthf9sfc1p56i9qdf7ro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjJYtDePnY2d9ffh28DkYdgUf62PgV9G0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98162556515-sml927i5bq70nthf9sfc1p56i9qdf7ro.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
