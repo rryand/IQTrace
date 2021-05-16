@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import 'package:iq_trace/models/user.dart';
-import 'package:iq_trace/constants.dart';
+import './components/user_details.dart';
 import './components/iqt_drawer.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -30,9 +30,7 @@ class HomeScreen extends StatelessWidget {
           height: 55,
         ),
         centerTitle: true,
-        actions: [
-          _buildQrScannerButton(context),
-        ],
+        actions: [_buildQrScannerButton(context)],
         leading: _buildMenuButton(),
       ),
       drawer: IQTDrawer(user),
@@ -72,45 +70,6 @@ class HomeScreen extends StatelessWidget {
         size: 30
       ),
       onPressed: () => Navigator.pushNamed(context, '/scanner'),
-    );
-  }
-}
-
-class UserDetails extends StatelessWidget {
-  UserDetails(this.user);
-
-  final User user;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          user.name,
-          style: Theme.of(context).textTheme.headline4?.copyWith(
-            color: iqtPrimaryColor,
-            fontWeight: FontWeight.bold,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        Padding(padding: EdgeInsets.symmetric(vertical: 2.0)),
-        Text(
-          user.email,
-          style: Theme.of(context).textTheme.headline6?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        Padding(padding: EdgeInsets.symmetric(vertical: 2.0)),
-        Text(
-          user.contactNumber,
-          style: Theme.of(context).textTheme.headline6?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
     );
   }
 }
