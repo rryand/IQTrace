@@ -1,4 +1,4 @@
-class User {
+class IQTUser {
   final int _month;
   final int _day;
   final int _year;
@@ -9,6 +9,7 @@ class User {
   final String email;
   final String portraitUrl;
   final bool isAdmin;
+  final List symptoms;
 
   String get name {
     return firstName + ' ' + lastName;
@@ -18,7 +19,7 @@ class User {
     return '$_month/$_day/$_year';
   }
 
-  User(
+  IQTUser(
     this.firstName,
     this.lastName,
     this._month,
@@ -28,6 +29,7 @@ class User {
     this.email,
     this.portraitUrl,
     this.isAdmin,
+    [this.symptoms = const []]
   );
 
   Map<String, dynamic> toJson() => {

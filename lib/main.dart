@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:iq_trace/screens/home/home_screen.dart';
 import 'package:iq_trace/constants.dart';
 import './screens/login/login_screen.dart';
+import 'screens/register/register_screen.dart';
 import './screens/update/symptom_update_screen.dart';
 import './screens/scanner/qr_scanner_screen.dart';
 
@@ -52,6 +53,7 @@ class IQTrace extends StatelessWidget {
       routes: {
         '/home': (context) => HomeScreen(title: app_title),
         '/login': (context) => LoginScreen(),
+        '/register': (context) => RegisterScreen(),
         '/update': (context) => SymptomUpdateScreen(),
         '/scanner': (context) => QRScannerScreen(),
       },

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import './components/login_header.dart';
-import './components/login_button.dart';
+import '../../components/user_account_form.dart';
+import '../../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -9,8 +10,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _emailField = TextEditingController();
-  TextEditingController _passwordField = TextEditingController();
+  final TextEditingController _emailField = TextEditingController();
+  final TextEditingController _passwordField = TextEditingController();
+  final authService = new AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -34,34 +36,20 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TextFormField(
-                    controller: _emailField,
-                    decoration: InputDecoration(
-                      hintText: 'something@email.com',
-                      labelText: 'Email',
-                    ),
-                  ),
-                  TextFormField(
-                    controller: _passwordField,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'password',
-                      labelText: 'Password',
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.only(top: 24.0)),
-                  LoginButton(
-                    text: 'Login',
-                    onPressed: () {},
-                  ),
-                  Padding(padding: EdgeInsets.only(top: 12.0)),
-                  Text('No account yet?'),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text('Register')
+                  UserAccountForm(
+                    emailController: _emailField,
+                    passwordController: _passwordField,
+                    buttonText: 'Login',
+                    buttonOnPressed: () {},
                   ),
                 ],
               ),
+            ),
+            Padding(padding: EdgeInsets.only(top: 12.0)),
+            Text('No account yet?'),
+            TextButton(
+              onPressed: () => Navigator.pushNamed(context, '/register'),
+              child: Text('Register')
             ),
           ],
         ),

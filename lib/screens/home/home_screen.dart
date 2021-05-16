@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:iq_trace/models/user.dart';
 import './components/user_details.dart';
@@ -9,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({required this.title});
 
   final String title;
-  final User user = User(
+  final IQTUser user = IQTUser(
     'Ramses Ryan',
     'Dineros',
     9,
@@ -21,8 +22,12 @@ class HomeScreen extends StatelessWidget {
     true,
   );
 
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
+    print(auth.currentUser);
+    
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
