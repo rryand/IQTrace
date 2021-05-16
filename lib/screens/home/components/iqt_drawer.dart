@@ -22,7 +22,9 @@ class IQTDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.qr_code_scanner),
             title: Text('QR Scanner'),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/scanner');
+            },
           ),
           if (user.isAdmin) ...[
             Divider(
