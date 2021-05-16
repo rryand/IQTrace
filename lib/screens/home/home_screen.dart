@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
         ),
         centerTitle: true,
         actions: [
-          _buildQrScannerButton(),
+          _buildQrScannerButton(context),
         ],
         leading: _buildMenuButton(),
       ),
@@ -65,13 +65,13 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildQrScannerButton() {
+  Widget _buildQrScannerButton(context) {
     return IconButton(
       icon: Icon(
         Icons.qr_code_scanner,
         size: 30
       ),
-      onPressed: () {}
+      onPressed: () => Navigator.pushNamed(context, '/scanner'),
     );
   }
 }

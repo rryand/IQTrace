@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iq_trace/screens/home/home_screen.dart';
 import 'package:iq_trace/constants.dart';
 import './screens/update/symptom_update_screen.dart';
+import './screens/scanner/qr_scanner_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => HomeScreen(title: app_title),
         '/update': (context) => SymptomUpdateScreen(),
+        '/scanner': (context) => QRScannerScreen(),
       },
     );
   }
