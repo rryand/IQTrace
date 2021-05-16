@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:iq_trace/screens/home/home_screen.dart';
 import 'package:iq_trace/constants.dart';
+import './screens/login/login_screen.dart';
 import './screens/update/symptom_update_screen.dart';
 import './screens/scanner/qr_scanner_screen.dart';
 
@@ -47,9 +48,10 @@ class IQTrace extends StatelessWidget {
       theme: ThemeData(
         primaryColor: iqtPrimaryColor,
       ),
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
-        '/': (context) => HomeScreen(title: app_title),
+        '/home': (context) => HomeScreen(title: app_title),
+        '/login': (context) => LoginScreen(),
         '/update': (context) => SymptomUpdateScreen(),
         '/scanner': (context) => QRScannerScreen(),
       },
