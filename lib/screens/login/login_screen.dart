@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './components/login_header.dart';
-import '../../components/user_account_form.dart';
-import '../../services/auth_service.dart';
+import 'components/login_form.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,16 +9,21 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailField = TextEditingController();
-  final TextEditingController _passwordField = TextEditingController();
-  final authService = new AuthService();
+  bool isLoading = false;
+  final emailFieldCtrl = TextEditingController();
+  final passwordFieldCtrl = TextEditingController();
+
+  void setLoadingState(bool value) {
+    setState(() => isLoading = value);
+  }
 
   @override
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width;
     double _screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
+    return isLoading ? CircularProgressIndicator()
+    : Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
         width: _screenWidth,
@@ -31,20 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: _screenWidth,
               height: _screenHeight,
             ),
-            Padding(
-              padding: EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  UserAccountForm(
-                    emailController: _emailField,
-                    passwordController: _passwordField,
-                    buttonText: 'Login',
-                    buttonOnPressed: () {},
-                  ),
-                ],
-              ),
-            ),
+            LoginForm(setLoadingState, emailFieldCtrl, passwordFieldCtrl),
             Padding(padding: EdgeInsets.only(top: 12.0)),
             Text('No account yet?'),
             TextButton(

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:iq_trace/constants.dart';
+import '../../../services/auth_service.dart';
 
 class IQTDrawer extends StatelessWidget {
   IQTDrawer(this.user);
 
   final user;
+  final authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +28,29 @@ class IQTDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/scanner');
             },
           ),
-          if (user.isAdmin) ...[
-            Divider(
-              indent: 24.0,
-              endIndent: 24.0,
-              height: 1.0,
-              thickness: 1.0,
-            ),
+          Divider(
+            indent: 24.0,
+            endIndent: 24.0,
+            height: 1.0,
+            thickness: 1.0,
+          ),
+          if (user.isAdmin)
             ListTile(
               leading: Icon(Icons.admin_panel_settings),
               title: Text('Admin'),
               onTap: () {},
             ),
-          ],
+          Spacer(),
+          ListTile(
+            leading: Icon(Icons.west),
+            title: Text('Sign Out'),
+            onTap: () async{
+              bool isSignedOut = await authService.signOut(context);
+              if (isSignedOut) {
+                Navigator.pushReplacementNamed(context, '/login');
+              }
+            },
+          ),
         ],
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:iq_trace/models/user.dart';
 import './components/user_details.dart';
@@ -17,17 +16,13 @@ class HomeScreen extends StatelessWidget {
     16,
     1996,
     '09294137458',
-    'ramsesryandinerosramsesryandineros@gmail.com',
+    'ramsesryandineros@gmail.com',
     'http://FAKEURL.com',
     true,
   );
 
-  final FirebaseAuth auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
-    print(auth.currentUser);
-    
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
@@ -45,10 +40,13 @@ class HomeScreen extends StatelessWidget {
           horizontal: 16.0,  
         ),
         child:  Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            QrImage(
-              data: user.toJson().toString(),
-              size: 225.0,
+            Center(
+              child: QrImage(
+                data: user.toJson().toString(),
+                size: 225.0,
+              ),
             ),
             UserDetails(user),
           ],
