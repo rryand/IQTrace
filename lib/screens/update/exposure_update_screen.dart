@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
 
-import './components/symptom_update_form.dart';
+import './components/exposure_update_form.dart';
 
-class SymptomUpdateScreen extends StatelessWidget {
+class ExposureUpdateScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  final _symptoms = [];
+  final _exposure = [];
 
   @override
   Widget build(BuildContext context) {
+    final _arguments = ModalRoute.of(context)!.settings.arguments as Map;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Symptom Update'),
+        title: Text('Exposure Update'),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_forward),
         onPressed: () {
-          _symptoms.clear();
+          _exposure.clear();
           _formKey.currentState?.save();
           Navigator.pushNamed(
             context,
-            '/update/exposure',
-            arguments: { 'symptoms': _symptoms }
+            '/update/quarantine',
+            arguments: { 'exposure': _exposure, ..._arguments}
           );
         },
       ),
-      body: SymptomUpdateForm(_formKey, _symptoms),
+      body: ExposureUpdateForm(_formKey, _exposure),
     );
   }
 }

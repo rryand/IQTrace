@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:iq_trace/screens/home/home_screen.dart';
 import 'package:iq_trace/constants.dart';
-import './screens/login/login_screen.dart';
+import 'package:iq_trace/screens/update/exposure_update_screen.dart';
+import 'package:iq_trace/screens/update/quarantine_update_screen.dart';
+import 'screens/login/login_screen.dart';
 import 'screens/register/register_screen.dart';
-import './screens/update/symptom_update_screen.dart';
-import './screens/scanner/qr_scanner_screen.dart';
+import 'screens/register/camera_screen.dart';
+import 'screens/register/display_image_screen.dart';
+import 'screens/update/symptom_update_screen.dart';
+import 'screens/scanner/qr_scanner_screen.dart';
 
-void main() {
+List? cameras;
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  cameras = await availableCameras();
   runApp(App());
 }
 
@@ -44,19 +53,33 @@ class _AppState extends State<App> {
 class IQTrace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: iqtPrimaryColor,
-      ),
-      initialRoute: '/login',
-      routes: {
-        '/home': (context) => HomeScreen(title: app_title),
-        '/login': (context) => LoginScreen(),
-        '/register': (context) => RegisterScreen(),
-        '/update': (context) => SymptomUpdateScreen(),
-        '/scanner': (context) => QRScannerScreen(),
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        
+        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+          FocusManager.instance.primaryFocus!.unfocus();
+        }
       },
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primaryColor: iqtPrimaryColor,
+          secondaryHeaderColor: iqtSecondaryColor,
+        ),
+        initialRoute: '/login',
+        routes: {
+          '/home': (context) => HomeScreen(title: app_title),
+          '/login': (context) => LoginScreen(),
+          '/register': (context) => RegisterScreen(cameras),
+          '/register/camera': (context) => CameraScreen(cameras),
+          '/register/camera/image': (context) => DisplayImageScreen(),
+          '/update': (context) => SymptomUpdateScreen(),
+          '/update/exposure': (context) => ExposureUpdateScreen(),
+          '/update/quarantine': (context) => QuarantineUpdateScreen(),
+          '/scanner': (context) => QRScannerScreen(),
+        },
+      ),
     );
   }
 }

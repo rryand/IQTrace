@@ -3,27 +3,16 @@ import 'package:flutter/material.dart';
 import './components/login_header.dart';
 import 'components/login_form.dart';
 
-class LoginScreen extends StatefulWidget {
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  bool isLoading = false;
+class LoginScreen extends StatelessWidget {
   final emailFieldCtrl = TextEditingController();
   final passwordFieldCtrl = TextEditingController();
-
-  void setLoadingState(bool value) {
-    setState(() => isLoading = value);
-  }
 
   @override
   Widget build(BuildContext context) {
     double _screenWidth = MediaQuery.of(context).size.width;
     double _screenHeight = MediaQuery.of(context).size.height;
 
-    return isLoading ? CircularProgressIndicator()
-    : Scaffold(
+    return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
         width: _screenWidth,
@@ -35,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: _screenWidth,
               height: _screenHeight,
             ),
-            LoginForm(setLoadingState, emailFieldCtrl, passwordFieldCtrl),
+            LoginForm(emailFieldCtrl, passwordFieldCtrl),
             Padding(padding: EdgeInsets.only(top: 12.0)),
             Text('No account yet?'),
             TextButton(

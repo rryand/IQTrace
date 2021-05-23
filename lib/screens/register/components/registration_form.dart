@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:iq_trace/services/user_service.dart';
+import 'registration_form_button.dart';
+import '../../../models/user.dart';
 
 class RegistrationForm extends StatefulWidget {
-  RegistrationForm(this.formKey);
+  RegistrationForm(this.cameras);
 
-  final formKey;
+  final cameras;
 
   @override
   _RegistrationFormState createState() => _RegistrationFormState();
 }
 
 class _RegistrationFormState extends State<RegistrationForm> {
-  final TextEditingController _dateFieldCtrl = TextEditingController();
+  final _userService = UserService();
+  final _authInstance = FirebaseAuth.instance; // TODO: DELETE
+  final _dateFieldCtrl = TextEditingController();
+  final _passwordFieldCtrl = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _user = IQTUser();
   DateTime _selectedDate = DateTime(1996, 9, 16);
 
   Future<void> _selectDate(BuildContext context) async {
@@ -31,7 +41,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: widget.formKey,
+      key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -54,8 +64,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
               }
               return null;
             },
+            onSaved: (value) => _user.email = value!,
           ),
           TextFormField(
+            controller: _passwordFieldCtrl,
             obscureText: true,
             decoration: InputDecoration(
               hintText: 'password',
@@ -66,6 +78,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 return 'required';
               } else if (value.length < 3) {
                 return 'password is too short';
+              } else if (value.contains(RegExp(r'\s'))) {
+                return 'please enter a valid password';
               }
               return null;
             },
@@ -81,6 +95,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               }
               return null;
             },
+            onSaved: (value) => _user.firstName = value!,
           ),
           TextFormField(
             decoration: InputDecoration(
@@ -93,6 +108,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               }
               return null;
             },
+            onSaved: (value) => _user.lastName = value!,
           ),
           TextFormField(
             decoration: InputDecoration(
@@ -102,11 +118,12 @@ class _RegistrationFormState extends State<RegistrationForm> {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'required';
-              } else if (!value.contains(RegExp(r'^09\D{9}'))) {
+              } else if (!value.contains(RegExp(r'^09\d{9}'))) {
                 return 'please enter a valid phone number';
               }
               return null;
             },
+            onSaved: (value) => _user.contactNumber = value!,
           ),
           TextFormField(
             focusNode: AlwaysDisabledFocusNode(),
@@ -122,27 +139,25 @@ class _RegistrationFormState extends State<RegistrationForm> {
               }
               return null;
             },
+            onSaved: (value) => _user.birthday = value!,
           ),
           Padding(padding: EdgeInsetsDirectional.only(top: 24.0)),
-          Align(
-            alignment: Alignment.centerRight,
-            child: ElevatedButton(
-              onPressed: () {
-                // Validate returns true if the form is valid, or false otherwise.
-                if (widget.formKey.currentState!.validate()) {
-                  // If the form is valid, display a snackbar. In the real world,
-                  // you'd often call a server or save the information in a database.
-                  ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('Processing Data')));
-                }
-              },
-              child: Text('Register'),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty
-                  .resolveWith((states) => Theme.of(context).primaryColor,
-                ),
-              ),
-            ),
+          RegistrationFormButton(
+            text: 'Next',
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                _formKey.currentState!.save();
+                Navigator.pushNamed(
+                  context,
+                  '/register/camera',
+                  arguments: {
+                    'formKey': _formKey,
+                    'user': _user,
+                    'password': _passwordFieldCtrl.text,
+                  },
+                );
+              }
+            },
           ),
         ],
       ),

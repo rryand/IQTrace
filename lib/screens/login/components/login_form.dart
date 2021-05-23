@@ -1,15 +1,34 @@
 import 'package:flutter/material.dart';
 
 import 'login_button.dart';
-import '../../../services/auth_service.dart';
+import 'package:iq_trace/services/auth_service.dart';
 
-class LoginForm extends StatelessWidget {
-  LoginForm(this.setLoadingState, this.emailFieldCtrl, this.passwordFieldCtrl);
+class LoginForm extends StatefulWidget {
+  LoginForm(this.emailFieldCtrl, this.passwordFieldCtrl);
 
   final emailFieldCtrl;
   final passwordFieldCtrl;
-  final authService = AuthService();
-  final setLoadingState;
+
+  @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  bool _isLoading = false;
+
+  Future<void> _signIn(BuildContext context) async {
+    final _authService = AuthService();
+
+    setState(() => _isLoading = true);
+
+    bool _shouldNavigate = await _authService
+        .signIn(widget.emailFieldCtrl.text, widget.passwordFieldCtrl.text);
+
+    setState(() => _isLoading = false);
+    if (_shouldNavigate) {
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +38,14 @@ class LoginForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           TextFormField(
-            controller: emailFieldCtrl,
+            controller: widget.emailFieldCtrl,
             decoration: InputDecoration(
               hintText: 'something@email.com',
               labelText: 'Email',
             ),
           ),
           TextFormField(
-            controller: passwordFieldCtrl,
+            controller: widget.passwordFieldCtrl,
             obscureText: true,
             decoration: InputDecoration(
               hintText: 'password',
@@ -34,18 +53,9 @@ class LoginForm extends StatelessWidget {
             ),
           ),
           Padding(padding: EdgeInsets.only(top: 24.0)),
-          LoginButton(
+          _isLoading ? CircularProgressIndicator() : LoginButton(
             text: 'Login',
-            onPressed: () async {
-              bool _shouldNavigate = await authService
-                  .signIn(context, emailFieldCtrl.text, passwordFieldCtrl.text);
-              setLoadingState(true);
-              if (_shouldNavigate) {
-                Navigator.pushReplacementNamed(context, '/home');
-              } else {
-                setLoadingState(false);
-              }
-            },
+            onPressed: () => _signIn(context),
           ),
         ],
       ),
