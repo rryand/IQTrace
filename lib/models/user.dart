@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:iq_trace/services/auth_service.dart';
 import '../services/user_service.dart';
@@ -57,7 +56,7 @@ class IQTUser {
     symptoms: snapshot.get('symptoms'),
   );
 
-  Future<bool> save(context, String password) async {
+  Future<bool> save(context, String password) async { // TODO: Move to UserService
     final _authService = AuthService();
     final _userService = UserService();
     final _storageService = StorageService();

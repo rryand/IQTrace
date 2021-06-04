@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import 'package:iq_trace/services/user_service.dart';
+
 class QRScannerScreen extends StatefulWidget {
   @override
   _QRScannerScreenState createState() => _QRScannerScreenState();
@@ -103,6 +105,8 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   }
 
   void _onQRViewCreated(QRViewController controller) {
+    UserService _userService = UserService();
+
     setState(() {
       this.controller = controller;
     });
@@ -110,6 +114,8 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       setState(() {
         result = scanData;
       });
+      _userService.updateRoomRecords(scanData.code);
+      Navigator.of(context).popUntil(ModalRoute.withName('/home'));
     });
   }
 

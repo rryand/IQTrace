@@ -38,7 +38,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
-  
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Upload Image'),

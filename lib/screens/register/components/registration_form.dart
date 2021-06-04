@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:iq_trace/services/user_service.dart';
 import 'registration_form_button.dart';
 import '../../../models/user.dart';
 
@@ -16,8 +14,6 @@ class RegistrationForm extends StatefulWidget {
 }
 
 class _RegistrationFormState extends State<RegistrationForm> {
-  final _userService = UserService();
-  final _authInstance = FirebaseAuth.instance; // TODO: DELETE
   final _dateFieldCtrl = TextEditingController();
   final _passwordFieldCtrl = TextEditingController();
   final _formKey = GlobalKey<FormState>();
