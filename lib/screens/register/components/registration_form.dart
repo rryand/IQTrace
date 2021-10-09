@@ -14,10 +14,10 @@ class RegistrationForm extends StatefulWidget {
 }
 
 class _RegistrationFormState extends State<RegistrationForm> {
-  final _dateFieldCtrl = TextEditingController();
-  final _passwordFieldCtrl = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  final _user = IQTUser();
+  final dateFieldCtrl = TextEditingController();
+  final passwordFieldCtrl = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  final user = User();
   DateTime _selectedDate = DateTime(1996, 9, 16);
 
   Future<void> _selectDate(BuildContext context) async {
@@ -30,14 +30,29 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
     if (_newSelectedDate != null) {
       _selectedDate = _newSelectedDate;
-      _dateFieldCtrl.text = DateFormat('yyyy-MM-dd').format(_selectedDate);
+      dateFieldCtrl.text = DateFormat('yyyy-MM-dd').format(_selectedDate);
+    }
+  }
+
+  void _onPressed() {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      Navigator.pushNamed(
+        context,
+        '/register/camera',
+        arguments: {
+          'formKey': formKey,
+          'user': user,
+          'password': passwordFieldCtrl.text,
+        },
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -60,10 +75,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
               }
               return null;
             },
-            onSaved: (value) => _user.email = value!,
+            onSaved: (value) => user.email = value!,
           ),
           TextFormField(
-            controller: _passwordFieldCtrl,
+            controller: passwordFieldCtrl,
             obscureText: true,
             decoration: InputDecoration(
               hintText: 'password',
@@ -91,7 +106,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               }
               return null;
             },
-            onSaved: (value) => _user.firstName = value!,
+            onSaved: (value) => user.firstName = value!,
           ),
           TextFormField(
             decoration: InputDecoration(
@@ -104,7 +119,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               }
               return null;
             },
-            onSaved: (value) => _user.lastName = value!,
+            onSaved: (value) => user.lastName = value!,
           ),
           TextFormField(
             decoration: InputDecoration(
@@ -119,11 +134,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
               }
               return null;
             },
-            onSaved: (value) => _user.contactNumber = value!,
+            onSaved: (value) => user.contactNumber = value!,
           ),
           TextFormField(
             focusNode: AlwaysDisabledFocusNode(),
-            controller: _dateFieldCtrl,
+            controller: dateFieldCtrl,
             decoration: InputDecoration(
               hintText: 'YYYY-MM-DD',
               labelText: 'Date of Birth',
@@ -135,25 +150,12 @@ class _RegistrationFormState extends State<RegistrationForm> {
               }
               return null;
             },
-            onSaved: (value) => _user.birthday = value!,
+            onSaved: (value) => user.birthday = value!,
           ),
           Padding(padding: EdgeInsetsDirectional.only(top: 24.0)),
           RegistrationFormButton(
             text: 'Next',
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                Navigator.pushNamed(
-                  context,
-                  '/register/camera',
-                  arguments: {
-                    'formKey': _formKey,
-                    'user': _user,
-                    'password': _passwordFieldCtrl.text,
-                  },
-                );
-              }
-            },
+            onPressed: _onPressed,
           ),
         ],
       ),

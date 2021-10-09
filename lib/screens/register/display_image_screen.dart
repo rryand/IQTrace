@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:iq_trace/models/user.dart';
-import 'package:iq_trace/services/file_service.dart';
+import 'package:iq_trace/services/auth_service.dart';
 
 class DisplayImageScreen extends StatefulWidget {
   @override
@@ -12,27 +12,30 @@ class DisplayImageScreen extends StatefulWidget {
 class _DisplayImageScreenState extends State<DisplayImageScreen> {
   bool isLoading = false;
 
-  Future<void> _floatingButtonPressed(IQTUser user,String password, String imagePath) async {
-    final _fileService = FileService();
-
+  Future<void> _floatingButtonPressed(User user, String password, String imagePath) async {
+    // TODO: register
+    /* final auth = AuthService.instance;
     setState(() => isLoading = true);
-
-    user.localImagePath = await _fileService.moveToAppDocs(File(imagePath), 'user_image');
-    await _fileService.saveUser(user.toJson());
-    bool _isRegistered = await user.save(context, password);
+  
+    try {
+      await auth.register(user, password);
+      await auth.signIn(user.email!, password);
+      await auth.updateFaceEncoding(imagePath);
+    } catch (e) {
+      print(e.toString());
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('ERROR: ${e.toString()}')));
+    }
 
     setState(() => isLoading = false);
-
-    if (_isRegistered) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/home', (Route<dynamic> route) => false);
-    }
+    Navigator.pushNamedAndRemoveUntil(
+        context, '/home', (Route<dynamic> route) => false); */
   }
 
   @override
   Widget build(BuildContext context) {
     final _arguments = ModalRoute.of(context)!.settings.arguments as Map;
-    final IQTUser _user = _arguments['user'];
+    final User _user = _arguments['user'];
     final String _password = _arguments['password'];
     final String _imagePath = _arguments['imagePath'];
 

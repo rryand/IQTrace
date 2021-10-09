@@ -8,17 +8,16 @@ class IQTDrawer extends StatelessWidget {
 
   final user;
 
-  Future<void> _signOut(BuildContext context) async{
+  Future<void> _signOut(BuildContext context) async {
     final _authService = AuthService();
-    bool isSignedOut = await _authService.signOut();
-  
-    if (isSignedOut) {
-      Navigator.pushReplacementNamed(context, '/login');
-    }
+    await _authService.signOut();
+
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
   @override
   Widget build(BuildContext context) {
+    print(user);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,

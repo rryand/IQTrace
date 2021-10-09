@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:iq_trace/services/user_repository.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import 'package:iq_trace/services/user_service.dart';
-import 'package:iq_trace/models/user.dart';
 import './components/user_details.dart';
 import './components/iqt_drawer.dart';
 
@@ -13,22 +12,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<IQTUser>(
-      future: UserService().getUserInfo(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text('Something went wrong.');
-        } else if (snapshot.connectionState == ConnectionState.done) {
-          IQTUser _user = snapshot.data!;
-          return _buildScaffold(context, _user);
-        } else {
-          return CircularProgressIndicator();
-        }
-      }
-    );
-  }
+    final _userRepo = UserRepository.instance;
 
-  Widget _buildScaffold(context, user) {
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
@@ -39,7 +24,7 @@ class HomeScreen extends StatelessWidget {
         actions: [_buildQrScannerButton(context)],
         leading: _buildMenuButton(),
       ),
-      drawer: IQTDrawer(user),
+      drawer: IQTDrawer(_userRepo.currentUser),
       body: Padding(
         padding: EdgeInsets.symmetric(
           vertical: 10.0,
@@ -50,11 +35,11 @@ class HomeScreen extends StatelessWidget {
           children: [
             Center(
               child: QrImage(
-                data: user.toJson().toString(),
+                data: _userRepo.currentUser.toJson().toString(),
                 size: 225.0,
               ),
             ),
-            UserDetails(user),
+            UserDetails(_userRepo.currentUser),
           ],
         ),
       ),

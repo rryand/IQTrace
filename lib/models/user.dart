@@ -1,77 +1,47 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:iq_trace/services/auth_service.dart';
-import '../services/user_service.dart';
-import '../services/storage_service.dart';
-
-class IQTUser {
-  String uid;
-  String firstName;
-  String lastName;
-  String contactNumber;
-  String email;
-  String birthday;
-  String localImagePath;
+class User {
+  String? firstName;
+  String? lastName;
+  String? contactNumber;
+  String? email;
+  String? birthday;
+  Map<String, dynamic>? survey;
   bool isAdmin;
-  List symptoms;
 
   String get name {
-    return firstName + ' ' + lastName;
+    return firstName! + ' ' + lastName!;
   }
 
-  IQTUser({
-    this.uid = '',
-    this.firstName = '',
-    this.lastName = '',
-    this.birthday = '',
-    this.contactNumber = '',
-    this.email = '',
-    this.localImagePath = '',
-    this.isAdmin = false,
-    this.symptoms = const [],
+  User({
+    this.firstName,
+    this.lastName,
+    this.birthday,
+    this.contactNumber,
+    this.email,
+    this.survey,
+    this.isAdmin = false
   });
 
   Map<String, dynamic> toJson() => {
-    'uid': uid,
-    'firstName': firstName,
-    'lastName': lastName,
+    'first_name': firstName,
+    'last_name': lastName,
     'birthday': birthday,
-    'contactNumber': contactNumber,
+    'contact_number': contactNumber,
     'email': email,
-    'localImagePath': localImagePath,
-    'isAdmin': isAdmin,
-    'symptoms': symptoms,
+    'is_admin': isAdmin,
+    'survey': survey != null ? survey : {},
   };
 
-  factory IQTUser.fromSnapshot(DocumentSnapshot snapshot) => IQTUser(
-    uid: snapshot.get('uid'),
-    firstName: snapshot.get('firstName'),
-    lastName: snapshot.get('lastName'),
-    birthday: snapshot.get('birthday'),
-    contactNumber: snapshot.get('contactNumber'),
-    email: snapshot.get('email'),
-    localImagePath: snapshot.get('localImagePath'),
-    isAdmin: snapshot.get('isAdmin'),
-    symptoms: snapshot.get('symptoms'),
-  );
-
-  Future<bool> save(context, String password) async { // TODO: Move to UserService
-    final _authService = AuthService();
-    final _userService = UserService();
-    final _storageService = StorageService();
-
-    try {
-      final UserCredential userCredential = await _authService
-          .createUser(email, password);
-      uid = userCredential.user!.uid;
-      print('UID: $uid');
-      await _userService.uploadUserInfo(uid, this.toJson());
-      await _storageService.uploadImage(uid, localImagePath);
-      return true;
-    } catch (e) {
-      print(e.toString());
-      return false;
-    }
+  factory User.fromJson(Map<String, dynamic> user) {
+    print(user.runtimeType);
+    return User(
+      firstName: user['first_name'],
+      lastName: user['last_name'],
+      birthday: user['birthday'],
+      contactNumber: user['contact_number'],
+      email: user['email'],
+      // TODO: add logic for isAdmin
+      isAdmin: user['is_admin'] != null ? user['is_admin'] : false,
+      survey: user['survey'],
+    );
   }
 }

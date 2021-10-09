@@ -20,6 +20,24 @@ class _CameraScreenState extends State<CameraScreen> {
       (camera) => camera.lensDirection == CameraLensDirection.front);
   }
 
+  Future<void> _onPressed(Map arguments) async {
+    try {
+      await _initializeCameraController;
+      
+      final image = await _controller?.takePicture();
+
+      Navigator.pushNamed(
+        context,
+        '/register/camera/image',
+        arguments: {'imagePath': image?.path, ...arguments}
+      );
+    } catch (e) {
+      print(e.toString());
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('ERROR: ${e.toString()}')));
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +55,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
+    final arguments = ModalRoute.of(context)?.settings.arguments as Map;
 
     return Scaffold(
       appBar: AppBar(
@@ -46,23 +64,7 @@ class _CameraScreenState extends State<CameraScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.camera_alt),
         backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () async {
-          try {
-            await _initializeCameraController;
-            
-            final image = await _controller?.takePicture();
-
-            Navigator.pushNamed(
-              context,
-              '/register/camera/image',
-              arguments: {'imagePath': image?.path, ..._arguments}
-            );
-          } catch (e) {
-            print(e.toString());
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('ERROR: ${e.toString()}')));
-          }
-        },
+        onPressed: () => _onPressed(arguments),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
