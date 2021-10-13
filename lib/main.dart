@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'package:iq_trace/constants.dart';
+import 'package:iq_trace/services/auth_service.dart';
 import 'package:iq_trace/networking/api_response.dart';
+import 'package:iq_trace/models/user.dart';
 import 'package:iq_trace/screens/admin/admin_screen.dart';
 import 'package:iq_trace/screens/error/error_screen.dart';
 import 'package:iq_trace/screens/home/home_screen.dart';
-import 'package:iq_trace/constants.dart';
 import 'package:iq_trace/screens/update/exposure_update_screen.dart';
 import 'package:iq_trace/screens/update/quarantine_update_screen.dart';
-import 'package:iq_trace/services/auth_service.dart';
-import 'screens/login/login_screen.dart';
-import 'screens/register/register_screen.dart';
-import 'screens/register/camera_screen.dart';
-import 'screens/register/display_image_screen.dart';
-import 'screens/update/symptom_update_screen.dart';
-import 'screens/scanner/qr_scanner_screen.dart';
-import 'models/user.dart';
+import 'package:iq_trace/screens/login/login_screen.dart';
+import 'package:iq_trace/screens/register/register_screen.dart';
+import 'package:iq_trace/screens/register/camera_screen.dart';
+import 'package:iq_trace/screens/register/display_image_screen.dart';
+import 'package:iq_trace/screens/update/symptom_update_screen.dart';
+import 'package:iq_trace/screens/scanner/qr_scanner_screen.dart';
 
 List? cameras;
 
@@ -101,6 +101,12 @@ class IQTrace extends StatelessWidget {
         secondaryHeaderColor: iqtSecondaryColor,
         appBarTheme: AppBarTheme(
           backgroundColor: iqtPrimaryColor,
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            backgroundColor: iqtPrimaryColor,
+            primary: Colors.white,
+          ),
         ),
       ),
       initialRoute: initialRoute,

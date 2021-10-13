@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class IQTFormColumn extends StatelessWidget {
-  IQTFormColumn({required this.children});
+class IQTColumn extends StatelessWidget {
+  IQTColumn({required this.children});
 
   final List<Widget> children;
 

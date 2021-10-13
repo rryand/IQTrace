@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'checkbox_form_field.dart';
-import 'iqt_form_column.dart';
-import 'iqt_form_header.dart';
+import 'package:iq_trace/screens/common/iqt_column.dart';
+import 'package:iq_trace/screens/common/iqt_header.dart';
 
 class ExposureUpdateForm extends StatelessWidget {
   ExposureUpdateForm(this._formKey, this._exposure);
@@ -15,9 +15,9 @@ class ExposureUpdateForm extends StatelessWidget {
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
-        child: IQTFormColumn(
+        child: IQTColumn(
           children: <Widget>[
-            IQTFormHeader(
+            IQTHeader(
               title: 'Have you been exposed to any of the following?',
               subtitle: 'Meron ka bang nakasalamuha sa mga sumusunod?',
             ),

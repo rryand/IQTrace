@@ -32,7 +32,6 @@ class User {
   };
 
   factory User.fromJson(Map<String, dynamic> user) {
-    print(user.runtimeType);
     return User(
       firstName: user['first_name'],
       lastName: user['last_name'],

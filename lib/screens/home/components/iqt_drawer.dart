@@ -17,7 +17,6 @@ class IQTDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(user);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -45,7 +44,9 @@ class IQTDrawer extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.admin_panel_settings),
               title: Text('Admin'),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/admin');
+              },
             ),
           ListTile(
             leading: Icon(Icons.west),

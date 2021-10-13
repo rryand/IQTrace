@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'checkbox_form_field.dart';
-import 'iqt_form_column.dart';
-import 'iqt_form_header.dart';
+import 'package:iq_trace/screens/common/iqt_column.dart';
+import 'package:iq_trace/screens/common/iqt_header.dart';
 
 const SYMPTOMS = {
   'Cough': 'Ubo',
@@ -35,9 +35,9 @@ class _SymptomUpdateFormState extends State<SymptomUpdateForm> {
     return SingleChildScrollView(
       child: Form(
         key: widget._formKey,
-        child: IQTFormColumn(
+        child: IQTColumn(
           children: <Widget>[
-            IQTFormHeader(
+            IQTHeader(
               title: 'Do you have any of the following symptoms?',
               subtitle: 'May nararamdaman ka bang symptomas tulad ng mga ito?',
             ),

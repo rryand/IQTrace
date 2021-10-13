@@ -33,16 +33,53 @@ class UserRepository {
       const Duration(seconds: 2),
       () {
         _user = User(
-          firstName: 'Ryan',
+          firstName: 'Ramses Ryan',
           lastName: 'Dineros',
           birthday: '1996-09-16',
           contactNumber: '09294137458',
           email: 'ramsesryandineros@gmail.com',
-          isAdmin: false,
+          isAdmin: true,
           survey: {}
         );
         return _user!;
       },
+    );
+  }
+
+  Future<List<User>?> getUsersWithActiveSymptoms(String token) {
+    return Future.delayed(
+      const Duration(seconds: 2),
+      () {
+        return [
+          User(
+            firstName: 'Ryan',
+            lastName: 'Dineros',
+            birthday: '1996-09-16',
+            contactNumber: '09294137458',
+            email: 'ramsesryandineros@gmail.com',
+            isAdmin: true,
+            survey: {'test': true}
+          ),
+          User(
+            firstName: 'Ramses',
+            lastName: 'De Leon',
+            birthday: '1999-09-10',
+            contactNumber: '09994138541',
+            email: 'rrddineros@gmail.com',
+            isAdmin: true,
+            survey: {'test': true, 'test2': true}
+          ),
+          User(
+            firstName: 'John',
+            lastName: 'Smith',
+            birthday: '2001-03-26',
+            contactNumber: '09196362386',
+            email: 'jsmith@gmail.com',
+            isAdmin: true,
+            survey: {'test3': true}
+          ),
+        ];
+      }
     );
   }
 }

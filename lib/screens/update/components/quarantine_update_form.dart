@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'iqt_form_column.dart';
-import 'iqt_form_header.dart';
+import 'package:iq_trace/screens/common/iqt_column.dart';
+import 'package:iq_trace/screens/common/iqt_header.dart';
 
 class QuarantineUpdateForm extends StatelessWidget {
   QuarantineUpdateForm(this._setIsQuarantineState);
@@ -11,9 +11,9 @@ class QuarantineUpdateForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Form(
-      child: IQTFormColumn(
+      child: IQTColumn(
         children: <Widget>[
-          IQTFormHeader(
+          IQTHeader(
             title: 'Have you ever been asked to be isolated or '
               'quarantined by a medical professional or a local official?',
             subtitle: 'Ikaw ba ay na sabihan ng mahiwalay at dumistansya '
