@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iq_trace/networking/api_response.dart';
 import 'package:iq_trace/services/user_service.dart';
 
 import './components/quarantine_update_form.dart';
@@ -23,13 +24,26 @@ class _QuarantineUpdateScreenState extends State<QuarantineUpdateScreen> {
     final _userService = UserService();
     setState(() => _isLoading = true );
 
-    await _userService.updateUserSymptoms(
+    final response = await _userService.updateUserSymptoms(
       { 'isQuarantined': _isQuarantined, ..._arguments }
     );
-    print({ 'isQuarantined': _isQuarantined, ..._arguments });
 
     Navigator.pushNamedAndRemoveUntil(
         context, '/home', (Route<dynamic> route) => false);
+    
+    switch (response.status) {
+      case Status.COMPLETED:
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Symptom update complete!')));
+        break;
+      case Status.ERROR:
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(response.message!)));
+        break;
+      default:
+        break;
+    }
+
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('Symptom update complete!')));
 

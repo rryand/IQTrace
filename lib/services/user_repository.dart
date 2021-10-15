@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:iq_trace/models/user.dart';
 import 'package:iq_trace/networking/api_base_helper.dart';
 
@@ -22,7 +24,7 @@ class UserRepository {
             contactNumber: '09294137458',
             email: 'ramsesryandineros@gmail.com',
             isAdmin: true,
-            survey: {'test': true}
+            survey: ['test']
           ),
           User(
             firstName: 'Ramses',
@@ -31,7 +33,7 @@ class UserRepository {
             contactNumber: '09994138541',
             email: 'rrddineros@gmail.com',
             isAdmin: true,
-            survey: {'test': true, 'test2': true}
+            survey: ['test', 'test2']
           ),
           User(
             firstName: 'John',
@@ -40,14 +42,14 @@ class UserRepository {
             contactNumber: '09196362386',
             email: 'jsmith@gmail.com',
             isAdmin: true,
-            survey: {'test3': true}
+            survey: ['test3']
           ),
         ];
       }
     );
   }
 
-  Future<void> updateUser() {
-    return Future.delayed(const Duration(seconds: 2));
+  Future<Map<String, dynamic>> updateUser(Map<String, dynamic> userData, String token) async {
+    return await _api.put('/users/me', userData, token);
   }
 }

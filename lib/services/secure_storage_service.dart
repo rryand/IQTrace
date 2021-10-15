@@ -4,6 +4,7 @@ class SecureStorageService {
   static SecureStorageService? _instance;
 
   late FlutterSecureStorage _storage;
+  String? _token;
 
   static SecureStorageService get instance {
     if (_instance == null) {
@@ -14,12 +15,18 @@ class SecureStorageService {
     return _instance!;
   }
 
+  String? get token {
+    return _token;
+  }
+
   Future<String?> readAccessToken() async {
-    return await _storage.read(key: 'jwt');
+    _token = await _storage.read(key: 'jwt');
+    return _token;
   }
 
   Future<void> storeAccessToken(String token) async {
     await _storage.write(key: 'jwt', value: token);
+    _token = token;
   }
 
   Future<void> deleteAccessToken() async {

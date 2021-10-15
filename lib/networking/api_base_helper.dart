@@ -45,6 +45,29 @@ class ApiBaseHelper {
     return responseJson;
   }
 
+  Future<dynamic> put(String endpoint, Map<String, dynamic> body, [String? token]) async {
+    print('API PUT, url $endpoint');
+    var responseJson;
+
+    final Map<String, String> headers = token != null ? 
+      _getAuthHeader(token) : 
+      {};
+    headers['Content-type'] = 'application/json';
+
+    try {
+      final response = await http.put(
+        Uri.parse(_url + endpoint),
+        headers: headers,
+        body: jsonEncode(body),
+      );
+      responseJson = _returnResponse(response);
+    } on SocketException {
+      throw FetchDataHttpError('No internet connection');
+    }
+
+    return responseJson;
+  }
+
   Future<dynamic> patch(String endpoint, Map<String, dynamic> body, [String? token]) async {
     print('API PATCH, url $endpoint');
     var responseJson;

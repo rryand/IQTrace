@@ -4,7 +4,7 @@ class User {
   String? contactNumber;
   String? email;
   String? birthday;
-  Map<String, dynamic>? survey;
+  List<String>? survey;
   bool isAdmin;
 
   String get name {
@@ -28,10 +28,11 @@ class User {
     'contact_number': contactNumber,
     'email': email,
     'is_admin': isAdmin,
-    'survey': survey != null ? survey : {},
+    'survey': survey != null ? survey : <String>[],
   };
 
   factory User.fromJson(Map<String, dynamic> user) {
+    user['survey'] = <String>[...user['survey']];
     return User(
       firstName: user['first_name'],
       lastName: user['last_name'],

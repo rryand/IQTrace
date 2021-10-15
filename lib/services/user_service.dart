@@ -1,5 +1,6 @@
 import 'package:iq_trace/models/user.dart';
-import 'package:iq_trace/networking/api_base_helper.dart';
+import 'package:iq_trace/networking/api_response.dart';
+import 'package:iq_trace/services/secure_storage_service.dart';
 import 'package:iq_trace/services/user_repository.dart';
 
 class UserService {
@@ -8,6 +9,7 @@ class UserService {
   User? _user;
 
   UserRepository _userRepo = UserRepository();
+  SecureStorageService _storage = SecureStorageService.instance;
 
   static UserService get instance {
     if (_instance == null) {
@@ -36,7 +38,36 @@ class UserService {
     return await _userRepo.getUsersWithActiveSymptoms('token');
   }
   
-  Future<void> updateUserSymptoms(Map survey) async {
-    return await _userRepo.updateUser();
+  Future<ApiResponse<void>> updateUserSymptoms(Map survey) async {
+    final symptoms = [];
+    survey.forEach((key, value) {
+      switch (key) {
+        case 'isQuarantined':
+          if (survey[key]) {
+            symptoms.add(key);
+          }
+          break;
+        case 'exposure':
+        case 'symptoms':
+          List exposure = survey[key];
+          symptoms.addAll(exposure);
+          break;
+      }
+    });
+
+    try {
+      final fetchedUser = await getUser(_storage.token!);
+      final Map<String, dynamic> userToSend = fetchedUser.toJson();
+      userToSend['survey'] = symptoms;
+
+      final _userJson = await _userRepo.updateUser(userToSend, _storage.token!);
+      _user = User.fromJson(_userJson);
+
+      return ApiResponse.completed(null);
+    } catch (e, stacktrace) {
+      print(e);
+      print(stacktrace);
+      return ApiResponse.error(e.toString());
+    }
   }
 }
