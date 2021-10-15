@@ -14,4 +14,14 @@ class RoomService {
       return ApiResponse.error(e.toString());
     }
   }
+
+  Future<ApiResponse<void>> addTimelog(Map<String, dynamic> timelog) async {
+    try {
+      await _roomRepo.addTimelog();
+      return ApiResponse.completed(null);
+    } catch (e) {
+      print(e);
+      return ApiResponse.error(e.toString());
+    }
+  }
 }

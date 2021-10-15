@@ -17,7 +17,8 @@ class QuarantineUpdateForm extends StatelessWidget {
             title: 'Have you ever been asked to be isolated or '
               'quarantined by a medical professional or a local official?',
             subtitle: 'Ikaw ba ay na sabihan ng mahiwalay at dumistansya '
-              'sa iyong mga kasama sa bahay ayon sa isang doctor or taga health center?',
+              'sa iyong mga kasama sa bahay ayon sa isang doctor or taga '
+              'health center?',
           ),
           DropdownButtonFormField(
             value: false,

@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:iq_trace/services/room_service.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRScannerScreen extends StatefulWidget {
@@ -12,6 +14,7 @@ class QRScannerScreen extends StatefulWidget {
 class _QRScannerScreenState extends State<QRScannerScreen> {
   Barcode? result;
   QRViewController? controller;
+  Map<String, dynamic>? decodedData;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -38,16 +41,21 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       body: Column(
         children: <Widget>[
           Expanded(flex: 4, child: _buildQrView(context)),
-          Expanded(
-            flex: 1,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text('Format: ${result != null ? describeEnum(result!.format) : null}'),
-                Text('Data: ${result?.code}'),
-              ],
+          decodedData == null ? 
+            Expanded(
+              flex: 1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  if (result != null)
+                    Text('Format: ${ describeEnum(result!.format) }'),
+                  ...?_buildDecodedData(result?.code),
+                ],
+              ),
+            ) :
+            Expanded(
+              child: Center(child: CircularProgressIndicator()),
             ),
-          ),
         ],
       ),
     );
@@ -102,9 +110,24 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     );
   }
 
+  List<Widget>? _buildDecodedData(String? jsonData) {
+    if (jsonData == null) return null;
+
+    setState(() {
+      decodedData = jsonDecode(jsonData);
+    });
+
+    final List<Widget> widgets = [];
+    decodedData?.forEach((key, value) {
+      widgets.add(Text(key + ': ' + value));
+    });
+
+    return widgets;
+  }
+
   // TODO: update room record
   void _onQRViewCreated(QRViewController controller) {
-    //UserService _userService = UserService();
+    RoomService _roomService = RoomService();
 
     setState(() {
       this.controller = controller;
@@ -113,8 +136,12 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       setState(() {
         result = scanData;
       });
-      //_userService.updateRoomRecords(scanData.code);
-      //Navigator.of(context).popUntil(ModalRoute.withName('/home'));
+
+      if (decodedData == null) return;
+      controller.pauseCamera();
+      _roomService.addTimelog(decodedData!).then(
+        (value) => Navigator.of(context).popUntil(ModalRoute.withName('/home'))
+      );
     });
   }
 

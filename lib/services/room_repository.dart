@@ -54,4 +54,8 @@ class RoomRepository {
       }
     );
   }
+
+  Future<void> addTimelog() {
+    return Future.delayed(const Duration(seconds: 2));
+  }
 }
