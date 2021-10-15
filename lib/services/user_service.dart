@@ -7,7 +7,6 @@ class UserService {
 
   User? _user;
 
-  ApiBaseHelper _api = ApiBaseHelper();
   UserRepository _userRepo = UserRepository();
 
   static UserService get instance {

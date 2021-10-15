@@ -4,14 +4,14 @@ import 'package:iq_trace/networking/api_base_helper.dart';
 class UserRepository {
   ApiBaseHelper _api = ApiBaseHelper();
 
-  Future<User?> getUser(String token) {
+  Future<User> getUser(String token) async {
     // TODO: add token for auth
-    //final response = await _api.get('/users/me');
-    //_user = User.fromJson(response);
-    //return _user;
+    final response = await _api.get('/users/me');
+    final _user = User.fromJson(response);
+    return _user;
 
     // To simulate api call and response
-    return Future.delayed(
+    /* return Future.delayed(
       const Duration(seconds: 2),
       () {
         return User(
@@ -24,7 +24,7 @@ class UserRepository {
           survey: {}
         );
       },
-    );
+    ); */
   }
 
   Future<List<User>?> getUsersWithActiveSymptoms(String token) {

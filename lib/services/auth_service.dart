@@ -1,3 +1,4 @@
+import 'package:iq_trace/exceptions.dart';
 import 'package:iq_trace/models/user.dart';
 import 'package:iq_trace/networking/api_response.dart';
 import 'package:iq_trace/services/auth_repository.dart';
@@ -14,7 +15,11 @@ class AuthService {
       final token = await _storage.readAccessToken();
       final user = token != null ? await _userService.getUser(token) : null;
       return ApiResponse.completed(user);
-    } catch (e) {
+    } on UnauthorizedHttpError catch (e) {
+      print(e);
+      return ApiResponse.completed(null);
+    }
+     catch (e) {
       print(e);
       return ApiResponse.error(e.toString());
     }
