@@ -5,26 +5,9 @@ class UserRepository {
   ApiBaseHelper _api = ApiBaseHelper();
 
   Future<User> getUser(String token) async {
-    // TODO: add token for auth
-    final response = await _api.get('/users/me');
+    final response = await _api.get('/users/me', token);
     final _user = User.fromJson(response);
     return _user;
-
-    // To simulate api call and response
-    /* return Future.delayed(
-      const Duration(seconds: 2),
-      () {
-        return User(
-          firstName: 'Ramses Ryan',
-          lastName: 'Dineros',
-          birthday: '1996-09-16',
-          contactNumber: '09294137458',
-          email: 'ramsesryandineros@gmail.com',
-          isAdmin: true,
-          survey: {}
-        );
-      },
-    ); */
   }
 
   Future<List<User>?> getUsersWithActiveSymptoms(String token) {

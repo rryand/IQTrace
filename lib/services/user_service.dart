@@ -21,11 +21,11 @@ class UserService {
     return _user!;
   }
 
-  Future<User?> getUser(String token) async {
+  Future<User> getUser(String token) async {
     if (_user != null) return _user!;
 
     _user = await _userRepo.getUser(token);
-    return _user;
+    return _user!;
   }
 
   Future<List<User>?> getUsersWithActiveSymptoms() async {

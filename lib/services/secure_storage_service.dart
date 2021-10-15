@@ -15,8 +15,7 @@ class SecureStorageService {
   }
 
   Future<String?> readAccessToken() async {
-    //return await _storage.read(key: 'jwt'); // TODO: remove
-    return 'test';
+    return await _storage.read(key: 'jwt');
   }
 
   Future<void> storeAccessToken(String token) async {

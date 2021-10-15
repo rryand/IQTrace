@@ -28,6 +28,9 @@ class AuthService {
   Future<ApiResponse<User?>> signIn(String email, String password) async {
     try {
       final token = await _authRepo.login(email: email, password: password);
+      print(token);
+      _storage.storeAccessToken(token);
+
       final user = await _userService.getUser(token);
       return ApiResponse.completed(user);
     } catch (e) {

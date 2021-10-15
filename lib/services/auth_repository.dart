@@ -9,16 +9,11 @@ class AuthenticationRepository {
   final _api = ApiBaseHelper();
 
   Future<String> login({required String email, required String password}) async {
-    // TODO: integrate api login
-    return await Future.delayed(
-      const Duration(milliseconds: 300),
-      () async {
-        final token = 'test';
-        await _storage.storeAccessToken(token);
-        // throw 'test login error'; // debug login error
-        return token;
-      },
-    );
+    final response = await _api.post('/users/login', {
+      'username': email,
+      'password': password,
+    });
+    return response['access_token'];
   }
 
   Future<void> logout() async {

@@ -19,26 +19,16 @@ class _LoginFormState extends State<LoginForm> {
   bool _isLoading = false;
 
   Future<void> _signIn(BuildContext context) async {
-    //final authService = AuthService.instance;
+    final _authService = AuthService();
 
     setState(() => _isLoading = true);
 
-    // TODO: LoginBloc
-    //bool shouldNavigate = await authService
+    //ApiResponse response = await _authService
     //  .signIn(widget.emailFieldCtrl.text, widget.passwordFieldCtrl.text);
 
-    setState(() => _isLoading = false);
-    //if (shouldNavigate) {
-    //  Navigator.pushReplacementNamed(context, '/home');
-    //}
-  }
-
-  Future<void> _fakeSignIn(BuildContext context) async {
-    final auth = AuthService();
-
-    setState(() => _isLoading = true);
-
-    final ApiResponse response = await auth.signIn('test@mail.com', 'hunter2');
+    // TODO: Remove
+    final ApiResponse response = await _authService
+      .signIn('ramsesryandineros@gmail.com', 'hunter2');
 
     setState(() => _isLoading = false);
 
@@ -73,10 +63,10 @@ class _LoginFormState extends State<LoginForm> {
           TextFormField(
             //controller: widget.emailFieldCtrl,
             decoration: InputDecoration(
-              hintText: 'something@email.com',
+              hintText: 'yourname@email.com',
               labelText: 'Email',
             ),
-            initialValue: 'test@mail.com', // TODO: remove
+            initialValue: 'ramsesryandineros@gmail.com', // TODO: remove
           ),
           TextFormField(
             //controller: widget.passwordFieldCtrl,
@@ -90,7 +80,7 @@ class _LoginFormState extends State<LoginForm> {
           Padding(padding: EdgeInsets.only(top: 24.0)),
           _isLoading ? CircularProgressIndicator() : LoginButton(
             text: 'Login',
-            onPressed: () => _fakeSignIn(context),
+            onPressed: () => _signIn(context),
           ),
         ],
       ),
