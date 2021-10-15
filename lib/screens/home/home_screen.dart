@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iq_trace/services/user_repository.dart';
+import 'package:iq_trace/services/user_service.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import './components/user_details.dart';
@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _userRepo = UserRepository.instance;
+    final _userRepo = UserService.instance;
 
     return Scaffold(
       appBar: AppBar(

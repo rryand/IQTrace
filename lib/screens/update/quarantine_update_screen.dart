@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iq_trace/services/user_service.dart';
 
 import './components/quarantine_update_form.dart';
 
@@ -19,10 +20,13 @@ class _QuarantineUpdateScreenState extends State<QuarantineUpdateScreen> {
 
   // TODO: update user symptom
   Future<void> _saveSymptomUpdate(Map _arguments) async {
-    //final _userService = UserService();
+    final _userService = UserService();
     setState(() => _isLoading = true );
 
-    //_userService.updateUserSymptoms({ 'isQuarantined': _isQuarantined, ..._arguments });
+    await _userService.updateUserSymptoms(
+      { 'isQuarantined': _isQuarantined, ..._arguments }
+    );
+    print({ 'isQuarantined': _isQuarantined, ..._arguments });
 
     Navigator.pushNamedAndRemoveUntil(
         context, '/home', (Route<dynamic> route) => false);
@@ -40,10 +44,12 @@ class _QuarantineUpdateScreenState extends State<QuarantineUpdateScreen> {
       appBar: AppBar(
         title: Text('Quarantine Update'),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: _isLoading ? CircularProgressIndicator() : Icon(Icons.check),
-        onPressed: () => _saveSymptomUpdate(_arguments),
-      ),
+      floatingActionButton: _isLoading ? 
+        CircularProgressIndicator() : 
+        FloatingActionButton(
+          child: Icon(Icons.check),
+          onPressed: () => _saveSymptomUpdate(_arguments),
+        ),
       body: QuarantineUpdateForm(_setIsQuarantineState),
     );
   }

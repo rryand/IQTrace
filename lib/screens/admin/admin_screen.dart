@@ -4,7 +4,7 @@ import 'package:iq_trace/networking/api_response.dart';
 import 'package:iq_trace/screens/admin/components/active_symptom_list.dart';
 import 'package:iq_trace/screens/admin/timelogs_screen.dart';
 import 'package:iq_trace/screens/error/error_screen.dart';
-import 'package:iq_trace/services/user_repository.dart';
+import 'package:iq_trace/services/user_service.dart';
 
 class AdminScreen extends StatefulWidget {
   const AdminScreen({ Key? key }) : super(key: key);
@@ -49,7 +49,7 @@ class _AdminScreenState extends State<AdminScreen> {
   Future<ApiResponse<List<User>?>> _getActiveSymptoms() async {
     // TODO: get active symptoms from user repo
     try {
-      usersWithSymptoms = await UserRepository.instance.getUsersWithActiveSymptoms('token');
+      usersWithSymptoms = await UserService.instance.getUsersWithActiveSymptoms();
       return ApiResponse.completed(usersWithSymptoms);
     } catch (e) {
       print(e);
