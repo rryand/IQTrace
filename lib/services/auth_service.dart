@@ -28,7 +28,6 @@ class AuthService {
   Future<ApiResponse<User?>> signIn(String email, String password) async {
     try {
       final token = await _authRepo.login(email: email, password: password);
-      print(token);
       _storage.storeAccessToken(token);
 
       final user = await _userService.getUser(token);
@@ -41,5 +40,6 @@ class AuthService {
 
   Future<void> signOut() async {
     await _storage.deleteAccessToken();
+    _userService.removeUser();
   }
 }

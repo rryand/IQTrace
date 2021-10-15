@@ -21,6 +21,10 @@ class UserService {
     return _user!;
   }
 
+  void removeUser() {
+    _user = null;
+  }
+
   Future<User> getUser(String token) async {
     if (_user != null) return _user!;
 
