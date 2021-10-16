@@ -41,7 +41,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
       body: Column(
         children: <Widget>[
           Expanded(flex: 4, child: _buildQrView(context)),
-          decodedData == null ? 
+          decodedData == null || decodedData!['app'] != 'iqtrace' ? 
             Expanded(
               flex: 1,
               child: Column(
@@ -137,7 +137,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         result = scanData;
       });
 
-      if (decodedData == null) return;
+      if (decodedData == null || decodedData!['app'] != 'iqtrace') return;
       controller.pauseCamera();
       _roomService.addTimelog(decodedData!).then(
         (value) => Navigator.of(context).popUntil(ModalRoute.withName('/home'))

@@ -1,6 +1,9 @@
 import 'package:iq_trace/models/timelog.dart';
+import 'package:iq_trace/networking/api_base_helper.dart';
 
 class RoomRepository {
+  final _api = ApiBaseHelper();
+
   Future<List<Timelog>> getRoomTimelogs() {
     return Future.delayed(
       const Duration(seconds: 2),
@@ -55,7 +58,7 @@ class RoomRepository {
     );
   }
 
-  Future<void> addTimelog() {
-    return Future.delayed(const Duration(seconds: 2));
+  Future<void> addTimelog(Map<String, dynamic> timelog) async {
+    await _api.post('/timelog', timelog);
   }
 }

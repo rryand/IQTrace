@@ -30,12 +30,17 @@ class ApiBaseHelper {
   Future<dynamic> post(String endpoint, Map<String, dynamic> body, [String? token]) async {
     print('API POST, url $endpoint');
     var responseJson;
+
+    final Map<String, String> headers = token != null ? 
+      _getAuthHeader(token) : 
+      {};
+    headers['Content-type'] = 'application/json';
     
     try {
       final response = await http.post(
         Uri.parse(_url + endpoint),
-        headers: token != null ? _getAuthHeader(token) : null,
-        body: body,
+        headers: headers,
+        body: jsonEncode(body),
       );
       responseJson = _returnResponse(response);
     } on SocketException {

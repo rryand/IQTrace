@@ -27,10 +27,10 @@ class UserService {
     _user = null;
   }
 
-  Future<User> getUser(String token) async {
+  Future<User> getUser([String? token]) async {
     if (_user != null) return _user!;
 
-    _user = await _userRepo.getUser(token);
+    _user = await _userRepo.getUser(token != null ? token : _storage.token!);
     return _user!;
   }
 
