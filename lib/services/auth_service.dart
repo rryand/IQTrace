@@ -32,8 +32,9 @@ class AuthService {
 
       final user = await _userService.getUser(token);
       return ApiResponse.completed(user);
-    } catch (e) {
+    } catch (e, stacktrace) {
       print(e);
+      print(stacktrace);
       return ApiResponse.error(e.toString());
     }
   }

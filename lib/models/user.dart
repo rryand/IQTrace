@@ -31,6 +31,10 @@ class User {
     'survey': survey != null ? survey : <String>[],
   };
 
+  Map<String, dynamic> debugToJson() => {
+    'email': email
+  };
+
   factory User.fromJson(Map<String, dynamic> user) {
     user['survey'] = <String>[...user['survey']];
     return User(

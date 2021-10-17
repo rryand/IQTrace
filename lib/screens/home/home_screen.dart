@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:iq_trace/services/user_service.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -35,8 +37,8 @@ class HomeScreen extends StatelessWidget {
           children: [
             Center(
               child: QrImage(
-                data: _userRepo.currentUser.toJson().toString(),
-                size: 225.0,
+                data: jsonEncode(_userRepo.currentUser.debugToJson()),
+                size: 280.0,
               ),
             ),
             UserDetails(_userRepo.currentUser),
