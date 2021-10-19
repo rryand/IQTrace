@@ -4,6 +4,7 @@ class User {
   String? contactNumber;
   String? email;
   String? birthday;
+  String? address;
   List<String>? survey;
   bool isAdmin;
 
@@ -17,6 +18,7 @@ class User {
     this.birthday,
     this.contactNumber,
     this.email,
+    this.address,
     this.survey,
     this.isAdmin = false
   });
@@ -27,6 +29,7 @@ class User {
     'birthday': birthday,
     'contact_number': contactNumber,
     'email': email,
+    'address': address,
     'is_admin': isAdmin,
     'survey': survey != null ? survey : <String>[],
   };
@@ -43,6 +46,7 @@ class User {
       birthday: user['birthday'],
       contactNumber: user['contact_number'],
       email: user['email'],
+      address: user['address'] != null ? user['address'] : 'n/a',
       // TODO: add logic for isAdmin
       isAdmin: user['is_admin'] != null ? user['is_admin'] : false,
       survey: user['survey'],

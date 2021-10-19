@@ -20,6 +20,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   final passwordFieldCtrl = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final user = User();
+  final address = {};
   bool _isLoading = false;
   DateTime _selectedDate = DateTime(1996, 9, 16);
 
@@ -43,6 +44,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
       setState(() => _isLoading = true);
 
+      user.address = address['street'] + ', ' + address['brgy'] + ', ' 
+        + address['city'] + ', ' + address['province'];
+      
       AuthService()
         .register(user, passwordFieldCtrl.text)
         .then((ApiResponse<void> response) {
@@ -91,7 +95,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'required';
-              } else if (!value.contains(RegExp(r'^\w+@\w+\.\w+$'))) {
+              } else if (!value.contains(RegExp(r'^.+@.+\..+$'))) {
                 return 'please enter a valid email address';
               }
               return null;
@@ -141,6 +145,58 @@ class _RegistrationFormState extends State<RegistrationForm> {
               return null;
             },
             onSaved: (value) => user.lastName = value!,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: '001 Main Street',
+              labelText: 'House no./Street Name',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'required';
+              }
+              return null;
+            },
+            onSaved: (value) => address['street'] = value!,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: 'Brgy. XXXX',
+              labelText: 'Barangay',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'required';
+              }
+              return null;
+            },
+            onSaved: (value) => address['brgy'] = value!,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: 'XXXX City',
+              labelText: 'Town/City',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'required';
+              }
+              return null;
+            },
+            onSaved: (value) => address['city'] = value!,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: 'NCR',
+              labelText: 'Province',
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'required';
+              }
+              return null;
+            },
+            onSaved: (value) => address['province'] = value!,
           ),
           TextFormField(
             decoration: InputDecoration(

@@ -23,12 +23,12 @@ class _LoginFormState extends State<LoginForm> {
 
     setState(() => _isLoading = true);
 
-    //ApiResponse response = await _authService
-    //  .signIn(widget.emailFieldCtrl.text, widget.passwordFieldCtrl.text);
+    ApiResponse response = await _authService
+      .signIn(widget.emailFieldCtrl.text, widget.passwordFieldCtrl.text);
 
     // TODO: Remove
-    final ApiResponse response = await _authService
-      .signIn('ramsesryandineros@gmail.com', 'hunter2');
+    //final ApiResponse response = await _authService
+    //  .signIn('ramsesryandineros@gmail.com', 'hunter2');
 
     setState(() => _isLoading = false);
 
@@ -61,21 +61,21 @@ class _LoginFormState extends State<LoginForm> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           TextFormField(
-            //controller: widget.emailFieldCtrl,
+            controller: widget.emailFieldCtrl,
             decoration: InputDecoration(
               hintText: 'yourname@email.com',
               labelText: 'Email',
             ),
-            initialValue: 'ramsesryandineros@gmail.com', // TODO: remove
+            //initialValue: 'ramsesryandineros@gmail.com', // TODO: remove
           ),
           TextFormField(
-            //controller: widget.passwordFieldCtrl,
+            controller: widget.passwordFieldCtrl,
             obscureText: true,
             decoration: InputDecoration(
               hintText: 'password',
               labelText: 'Password',
             ),
-            initialValue: 'hunter2', // TODO: remove
+            //initialValue: 'hunter2', // TODO: remove
           ),
           Padding(padding: EdgeInsets.only(top: 24.0)),
           _isLoading ? CircularProgressIndicator() : LoginButton(
