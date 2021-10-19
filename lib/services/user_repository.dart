@@ -52,4 +52,8 @@ class UserRepository {
   Future<Map<String, dynamic>> updateUser(Map<String, dynamic> userData, String token) async {
     return await _api.put('/users/me', userData, token);
   }
+
+  Future<void> uploadFaceImage(String email, String imagePath) async {
+    await _api.multipartPatch('/users/image-encoding?email=$email', imagePath);
+  }
 }

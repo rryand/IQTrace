@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:dio/dio.dart';
 
 import 'package:iq_trace/exceptions.dart';
 
@@ -115,29 +116,29 @@ class ApiBaseHelper {
 
   Future<void> multipartPatch(String endpoint, String imagePath, [String? token]) async {
     var responseJson;
-    var request = new http.MultipartRequest(
-      'PATCH',
-      Uri.parse(_url + endpoint),
-    );
+    var dio = Dio();
+         
+    dio.options.baseUrl = _url;
 
-    request.headers['Content-Type'] = 'multipart/form-data';
-    if (token != null) {
-      request.headers['Authorization'] = 'Bearer $token';
-    }
-    request.files.add(
-      new http.MultipartFile.fromBytes(
-        'file',
-        await File(imagePath).readAsBytes(),
-        contentType: new MediaType('image', 'jpg')
-      ),
-    );
+    var formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(
+        imagePath, contentType: new MediaType('image', 'jpg'))
+    });
 
     try {
-      final streamedResponse = await request.send();
-      final response = await http.Response.fromStream(streamedResponse);
-      responseJson = _returnResponse(response);
+      final response = await dio.patch(endpoint, data: formData);
+      responseJson = _returnDioResponse(response);
     } on SocketException {
       throw FetchDataHttpError('No internet connection');
+    } on DioError catch (e) {
+      if (e.response != null) {
+        print(e.response?.data);
+        print(e.response?.headers);
+        print(e.response?.statusCode);
+        responseJson = _returnDioResponse(e.response!);
+      } else {
+        print(e.message);
+      }
     }
 
     return responseJson;
@@ -162,6 +163,27 @@ class ApiBaseHelper {
           'Error occured while communicating with server\n'
           'status code: ${response.statusCode}\n'
           '${response.body.toString()}');
+    }
+  }
+
+  dynamic _returnDioResponse(Response<dynamic> response) {
+    switch (response.statusCode) {
+      case 200:
+      case 201:
+        print(response.data);
+        break;
+      case 400:
+        throw BadRequestHttpError(response.data.toString());
+      case 401:
+        throw UnauthorizedHttpError(response.data.toString());
+      case 403:
+        throw ForbiddenHttpError(response.data.toString());
+      case 500:
+      default:
+        throw FetchDataHttpError(
+          'Error occured while communicating with server\n'
+          'status code: ${response.statusCode}\n'
+          '${response.data.toString()}');
     }
   }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:iq_trace/networking/api_response.dart';
+import 'package:iq_trace/services/auth_service.dart';
 
 import 'registration_form_button.dart';
 import '../../../models/user.dart';
@@ -18,6 +20,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   final passwordFieldCtrl = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final user = User();
+  bool _isLoading = false;
   DateTime _selectedDate = DateTime(1996, 9, 16);
 
   Future<void> _selectDate(BuildContext context) async {
@@ -37,15 +40,33 @@ class _RegistrationFormState extends State<RegistrationForm> {
   void _onPressed() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      Navigator.pushNamed(
-        context,
-        '/register/camera',
-        arguments: {
-          'formKey': formKey,
-          'user': user,
-          'password': passwordFieldCtrl.text,
-        },
-      );
+
+      setState(() => _isLoading = true);
+
+      AuthService()
+        .register(user, passwordFieldCtrl.text)
+        .then((ApiResponse<void> response) {
+          print("Register call complete");
+          switch (response.status) {
+            case Status.COMPLETED:
+              Navigator.pushNamed(
+                context,
+                '/register/camera',
+                arguments: {
+                  'formKey': formKey,
+                  'user': user,
+                },
+              );
+              break;
+            case Status.ERROR:
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('ERROR: ${response.message}'))
+              );
+              break;
+            default:
+              break;
+          }
+        });
     }
   }
 
@@ -153,7 +174,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
             onSaved: (value) => user.birthday = value!,
           ),
           Padding(padding: EdgeInsetsDirectional.only(top: 24.0)),
-          RegistrationFormButton(
+          _isLoading ? CircularProgressIndicator() : RegistrationFormButton(
             text: 'Next',
             onPressed: _onPressed,
           ),

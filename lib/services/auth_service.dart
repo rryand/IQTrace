@@ -43,4 +43,18 @@ class AuthService {
     await _storage.deleteAccessToken();
     _userService.removeUser();
   }
+
+  Future<ApiResponse<void>> register(User user, String password) async {
+    try {
+      Map<String, dynamic> userData = user.toJson();
+      userData['password'] = password;
+      await _authRepo.register(userData);
+
+      return ApiResponse.completed(null);
+    } catch(e, stacktrace) {
+      print(e);
+      print(stacktrace);
+      return ApiResponse.error(e.toString());
+    }
+  }
 }

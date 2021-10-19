@@ -70,4 +70,15 @@ class UserService {
       return ApiResponse.error(e.toString());
     }
   }
+
+  Future<ApiResponse<void>> uploadFaceImage(String email, String imagePath) async {
+    try {
+      await _userRepo.uploadFaceImage(email, imagePath);
+      return ApiResponse.completed(null);
+    } catch (e, stacktrace) {
+      print(e);
+      print(stacktrace);
+      return ApiResponse.error(e.toString());
+    }
+  }
 }

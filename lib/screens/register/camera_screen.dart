@@ -16,8 +16,11 @@ class _CameraScreenState extends State<CameraScreen> {
 
 
   CameraDescription _getFrontCamera(List<CameraDescription> cameras) {
-    return cameras.singleWhere(
-      (camera) => camera.lensDirection == CameraLensDirection.front);
+    //return cameras.singleWhere(
+    //  (camera) => camera.lensDirection == CameraLensDirection.front);
+    return cameras.firstWhere(
+      (camera) => camera.lensDirection == CameraLensDirection.front
+    );
   }
 
   Future<void> _onPressed(Map arguments) async {

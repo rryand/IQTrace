@@ -19,4 +19,8 @@ class AuthenticationRepository {
   Future<void> logout() async {
     await _storage.debugDeleteAll(); // TODO: delete token only
   }
+
+  Future<void> register(Map<String, dynamic> body) async {
+    await _api.post('/users/register', body);
+  }
 }

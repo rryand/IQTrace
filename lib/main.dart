@@ -85,7 +85,7 @@ class IQTrace extends StatelessWidget {
 
         if (!currentFocus.hasPrimaryFocus &&
             currentFocus.focusedChild != null) {
-          FocusManager.instance.primaryFocus!.unfocus();
+          FocusManager.instance.primaryFocus?.unfocus();
         }
       },
       child: errorMessage == null ? _buildApp(context, initialRoute) 
