@@ -71,6 +71,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
               break;
           }
         });
+      
+      setState(() => _isLoading = false);
     }
   }
 

@@ -34,9 +34,10 @@ class _DisplayImageScreenState extends State<DisplayImageScreen> {
           MaterialPageRoute(
             builder: (context) => 
               ErrorScreen(
-                errorMessage: response.message!,
-                onRetryPressed: () => Navigator.of(context)
-                  .popUntil(ModalRoute.withName('/register/camera'))
+                errorMessage: "Error! Account has been created but something "
+                  + "went wrong with image upload. Please login and try again.",
+                onRetryPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  context, '/login', (Route<dynamic> route) => false)
               ),
           )
         );
