@@ -57,10 +57,11 @@ class UserService {
 
     try {
       final fetchedUser = await getUser(_storage.token!);
-      final Map<String, dynamic> userToSend = fetchedUser.toJson();
-      userToSend['survey'] = symptoms;
+      fetchedUser.survey = new List<String>.from(symptoms);
+      fetchedUser.lastSurveyDate = _getCurrentDate();
 
-      final _userJson = await _userRepo.updateUser(userToSend, _storage.token!);
+      final _userJson = await _userRepo.updateUser(
+        fetchedUser.toJson(), _storage.token!);
       _user = User.fromJson(_userJson);
 
       return ApiResponse.completed(null);
@@ -80,5 +81,10 @@ class UserService {
       print(stacktrace);
       return ApiResponse.error(e.toString());
     }
+  }
+
+  DateTime _getCurrentDate() {
+    DateTime now = DateTime.now();
+    return DateTime(now.year, now.month, now.day);
   }
 }

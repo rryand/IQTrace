@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:iq_trace/models/user.dart';
+import 'package:iq_trace/services/helpers/date_helper.dart';
 import 'package:iq_trace/services/user_service.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import './components/user_details.dart';
 import './components/iqt_drawer.dart';
-import 'components/not_verified.dart';
+import './components/not_verified.dart';
+import './components/encoding.dart';
+import './components/survey_prompt.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({required this.title});
@@ -42,18 +46,25 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildBody(context) {
+    final User user = _userService.currentUser;
+
+    bool needSurvey = user.lastSurveyDate == null || 
+      DateHelper.calculateDifference(user.lastSurveyDate!) < 0;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (_userService.currentUser.faceEncoding!.length == 0)
-          _buildEncodingPrompt(context),
+        if (user.faceEncoding!.length == 0)
+          Encoding(),
+        if (needSurvey)
+          SurveyPrompt(),
         Center(
           child: QrImage(
-            data: jsonEncode(_userService.currentUser.debugToJson()),
+            data: jsonEncode(user.debugToJson()),
             size: 280.0,
           ),
         ),
-        UserDetails(_userService.currentUser),
+        UserDetails(user),
       ],
     );
   }
@@ -76,30 +87,6 @@ class HomeScreen extends StatelessWidget {
         size: 30
       ),
       onPressed: () => Navigator.pushNamed(context, '/scanner'),
-    );
-  }
-
-  Widget _buildEncodingPrompt(context) {
-    return ColoredBox(
-      color: Colors.red.shade200,
-      child: Column(
-        children: [
-          Text(
-            "You have not uploaded your picture for encoding!"
-            " Click on the button below to do so."
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pushNamed(
-              '/register/camera',
-              arguments: {
-                'isLoggedIn': true,
-                'user': _userService.currentUser,
-              },
-            ),
-            child: Text('Camera')
-          ),
-        ],
-      ),
     );
   }
 }

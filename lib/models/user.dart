@@ -1,3 +1,5 @@
+import 'package:iq_trace/services/helpers/date_helper.dart';
+
 class User {
   String? firstName;
   String? lastName;
@@ -9,6 +11,7 @@ class User {
   List? faceEncoding;
   bool isAdmin;
   bool isVerified;
+  DateTime? lastSurveyDate;
 
   String get name {
     return firstName! + ' ' + lastName!;
@@ -25,6 +28,7 @@ class User {
     this.faceEncoding,
     this.isAdmin = false,
     this.isVerified = false,
+    this.lastSurveyDate,
   });
 
   Map<String, dynamic> toJson() => {
@@ -36,7 +40,11 @@ class User {
     'address': address,
     'is_admin': isAdmin,
     'survey': survey != null ? survey : <String>[],
+    'face_encoding': faceEncoding,
     'is_verified': isVerified,
+    'last_survey_date': lastSurveyDate != null ? 
+      DateHelper.formatDate(lastSurveyDate!) :
+      null,
   };
 
   Map<String, dynamic> debugToJson() => {
@@ -56,7 +64,10 @@ class User {
       // TODO: add logic for isAdmin
       isAdmin: user['is_admin'] != null ? user['is_admin'] : false,
       survey: user['survey'],
-      isVerified: user['is_verified'] != null ? user['is_verified']: false,
+      isVerified: user['is_verified'] != null ? user['is_verified'] : false,
+      lastSurveyDate: user['last_survey_date'] != null ? 
+        DateHelper.fromString(user['last_survey_date']) : 
+        null,
     );
   }
 }
