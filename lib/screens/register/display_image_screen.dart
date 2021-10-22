@@ -14,7 +14,7 @@ class DisplayImageScreen extends StatefulWidget {
 class _DisplayImageScreenState extends State<DisplayImageScreen> {
   bool isLoading = false;
 
-  Future<void> _floatingButtonPressed(User user, String imagePath) async {
+  Future<void> _floatingButtonPressed(User user, String imagePath, bool isLoggedIn) async {
     final _userService = UserService.instance;
     setState(() => isLoading = true);
 
@@ -23,7 +23,11 @@ class _DisplayImageScreenState extends State<DisplayImageScreen> {
     switch (response.status) {
       case Status.COMPLETED:
         Navigator.pushNamedAndRemoveUntil(
-          context, '/login', (Route<dynamic> route) => false);
+          context, isLoggedIn ? '/home' : '/login', (Route<dynamic> route) => false);
+        
+        if (isLoggedIn) {
+          _userService.currentUser.faceEncoding = [1];
+        }
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Image encoding is successfull!'))
@@ -37,7 +41,7 @@ class _DisplayImageScreenState extends State<DisplayImageScreen> {
                 errorMessage: "Error! Account has been created but something "
                   + "went wrong with image upload. Please login and try again.",
                 onRetryPressed: () => Navigator.pushNamedAndRemoveUntil(
-                  context, '/login', (Route<dynamic> route) => false)
+                  context, isLoggedIn ? '/home' : '/login', (Route<dynamic> route) => false)
               ),
           )
         );
@@ -53,6 +57,9 @@ class _DisplayImageScreenState extends State<DisplayImageScreen> {
     final _arguments = ModalRoute.of(context)!.settings.arguments as Map;
     final User _user = _arguments['user'];
     final String _imagePath = _arguments['imagePath'];
+    final bool _isLoggedIn = _arguments['isLoggedIn'] != null ? 
+      _arguments['isLoggedIn'] : 
+      false;
 
     return Scaffold(
       appBar: AppBar(
@@ -61,7 +68,8 @@ class _DisplayImageScreenState extends State<DisplayImageScreen> {
       floatingActionButton: FloatingActionButton(
         child: isLoading ? CircularProgressIndicator() : Icon(Icons.save_alt),
         backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () async => await _floatingButtonPressed(_user, _imagePath),
+        onPressed: () async => await _floatingButtonPressed(
+          _user, _imagePath, _isLoggedIn),
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,

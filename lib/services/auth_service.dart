@@ -57,4 +57,17 @@ class AuthService {
       return ApiResponse.error(e.toString());
     }
   }
+
+  Future<ApiResponse<void>> sendVerificationEmail(String email) async {
+    try {
+      await _authRepo.sendVerificationEmail(email);
+      return ApiResponse.completed(null);
+    } on ForbiddenHttpError {
+      return ApiResponse.completed(null);
+    } catch(e, stacktrace) {
+      print(e);
+      print(stacktrace);
+      return ApiResponse.error(e.toString());
+    }
+  }
 }

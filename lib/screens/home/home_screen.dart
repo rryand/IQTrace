@@ -6,15 +6,19 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import './components/user_details.dart';
 import './components/iqt_drawer.dart';
+import 'components/not_verified.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({required this.title});
 
   final String title;
 
+  final _userService = UserService.instance;
+
   @override
   Widget build(BuildContext context) {
-    final _userRepo = UserService.instance;
+    final _isVerified = _userService.currentUser.isVerified;
+    print("isVerified: $_isVerified");
 
     return Scaffold(
       appBar: AppBar(
@@ -23,28 +27,34 @@ class HomeScreen extends StatelessWidget {
           height: 55,
         ),
         centerTitle: true,
-        actions: [_buildQrScannerButton(context)],
-        leading: _buildMenuButton(),
+        actions: _isVerified ? [_buildQrScannerButton(context)] : null,
+        leading: _isVerified ? _buildMenuButton() : null,
       ),
-      drawer: IQTDrawer(_userRepo.currentUser),
+      drawer: _isVerified ? IQTDrawer(_userService.currentUser) : null,
       body: Padding(
-        padding: EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
           vertical: 10.0,
           horizontal: 16.0,  
         ),
-        child:  Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(
-              child: QrImage(
-                data: jsonEncode(_userRepo.currentUser.debugToJson()),
-                size: 280.0,
-              ),
-            ),
-            UserDetails(_userRepo.currentUser),
-          ],
-        ),
+        child: _isVerified ? _buildBody(context) : NotVerified(),
       ),
+    );
+  }
+
+  Widget _buildBody(context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (_userService.currentUser.faceEncoding!.length == 0)
+          _buildEncodingPrompt(context),
+        Center(
+          child: QrImage(
+            data: jsonEncode(_userService.currentUser.debugToJson()),
+            size: 280.0,
+          ),
+        ),
+        UserDetails(_userService.currentUser),
+      ],
     );
   }
 
@@ -66,6 +76,30 @@ class HomeScreen extends StatelessWidget {
         size: 30
       ),
       onPressed: () => Navigator.pushNamed(context, '/scanner'),
+    );
+  }
+
+  Widget _buildEncodingPrompt(context) {
+    return ColoredBox(
+      color: Colors.red.shade200,
+      child: Column(
+        children: [
+          Text(
+            "You have not uploaded your picture for encoding!"
+            " Click on the button below to do so."
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pushNamed(
+              '/register/camera',
+              arguments: {
+                'isLoggedIn': true,
+                'user': _userService.currentUser,
+              },
+            ),
+            child: Text('Camera')
+          ),
+        ],
+      ),
     );
   }
 }

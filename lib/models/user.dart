@@ -6,7 +6,9 @@ class User {
   String? birthday;
   String? address;
   List<String>? survey;
+  List? faceEncoding;
   bool isAdmin;
+  bool isVerified;
 
   String get name {
     return firstName! + ' ' + lastName!;
@@ -20,7 +22,9 @@ class User {
     this.email,
     this.address,
     this.survey,
-    this.isAdmin = false
+    this.faceEncoding,
+    this.isAdmin = false,
+    this.isVerified = false,
   });
 
   Map<String, dynamic> toJson() => {
@@ -32,6 +36,7 @@ class User {
     'address': address,
     'is_admin': isAdmin,
     'survey': survey != null ? survey : <String>[],
+    'is_verified': isVerified,
   };
 
   Map<String, dynamic> debugToJson() => {
@@ -47,9 +52,11 @@ class User {
       contactNumber: user['contact_number'],
       email: user['email'],
       address: user['address'] != null ? user['address'] : 'n/a',
+      faceEncoding: user['face_encoding'],
       // TODO: add logic for isAdmin
       isAdmin: user['is_admin'] != null ? user['is_admin'] : false,
       survey: user['survey'],
+      isVerified: user['is_verified'] != null ? user['is_verified']: false,
     );
   }
 }

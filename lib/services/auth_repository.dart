@@ -23,4 +23,8 @@ class AuthenticationRepository {
   Future<void> register(Map<String, dynamic> body) async {
     await _api.post('/users/register', body);
   }
+
+  Future<void> sendVerificationEmail(String email) async {
+    await _api.post('/verification?email=$email');
+  }
 }

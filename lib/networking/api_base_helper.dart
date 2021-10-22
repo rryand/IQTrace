@@ -28,7 +28,7 @@ class ApiBaseHelper {
     return responseJson;
   }
 
-  Future<dynamic> post(String endpoint, Map<String, dynamic> body, [String? token]) async {
+  Future<dynamic> post(String endpoint, [Map<String, dynamic>? body, String? token]) async {
     print('API POST, url $endpoint');
     var responseJson;
 
@@ -41,7 +41,7 @@ class ApiBaseHelper {
       final response = await http.post(
         Uri.parse(_url + endpoint),
         headers: headers,
-        body: jsonEncode(body),
+        body: body != null ? jsonEncode(body) : null,
       );
       responseJson = _returnResponse(response);
     } on SocketException {
