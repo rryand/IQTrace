@@ -39,7 +39,6 @@ class ActiveSymptomList extends StatelessWidget {
 
   Widget _buildCount() {
     final count = usersWithSymptoms?.length ?? 0;
-    print(usersWithSymptoms);
     return Text(
       'Count: $count'
     );
