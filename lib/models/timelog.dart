@@ -1,12 +1,14 @@
+import 'package:iq_trace/services/helpers/date_helper.dart';
+
 class Timelog {
   final String email;
-  final String name;
+  final String? name;
   final int roomId;
   final DateTime timestamp;
 
   Timelog({
     required this.email,
-    required this.name,
+    this.name,
     required this.roomId,
     required this.timestamp
   });
@@ -20,10 +22,9 @@ class Timelog {
 
   factory Timelog.fromJson(Map<String, dynamic> timelog) {
     return Timelog(
-      email: timelog['email'],
-      name: timelog['name'],
-      roomId: timelog['room_id'],
-      timestamp: timelog['timestamp'],
+      email: timelog['user_email'],
+      roomId: timelog['room_number'],
+      timestamp: DateHelper.fromString(timelog['timestamp']),
     );
   }
 }

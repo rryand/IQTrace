@@ -47,10 +47,12 @@ class _TimelogsScreenState extends State<TimelogsScreen> {
       appBar: AppBar(
         title: Text('Timelogs'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          children: _buildTimelogsTables(rooms)
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Column(
+            children: _buildTimelogsTables(rooms)
+          ),
         ),
       ),
     );
@@ -66,10 +68,10 @@ class _TimelogsScreenState extends State<TimelogsScreen> {
           border: TableBorder.all(),
           children: <TableRow>[
             TableRow(
-              children: <Text>[
-                Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('Email', style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('Timelog', style: TextStyle(fontWeight: FontWeight.bold)),
+              decoration: BoxDecoration(color: Colors.grey[200]),
+              children: <Widget>[
+                IQTCell(text: 'Email', style: TextStyle(fontWeight: FontWeight.bold)),
+                IQTCell(text: 'Timelog', style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
             ..._buildRows(timelogs)
@@ -86,10 +88,9 @@ class _TimelogsScreenState extends State<TimelogsScreen> {
     timelogs.forEach((timelog) {
       rows.add(
         TableRow(
-          children: <Text>[
-            Text(timelog.name),
-            Text(timelog.email),
-            Text(timelog.timestamp.toString())
+          children: <Widget>[
+            IQTCell(text: timelog.email),
+            IQTCell(text: timelog.timestamp.toString()),
           ]
         )
       );
@@ -100,5 +101,20 @@ class _TimelogsScreenState extends State<TimelogsScreen> {
 
   Future<ApiResponse<Map<int, List<Timelog>>>> _getAllTimelogs() async {
     return await _roomService.getAllTimelogs();
+  }
+}
+
+class IQTCell extends StatelessWidget {
+  const IQTCell({ Key? key, required this.text, this.style }) : super(key: key);
+
+  final String text;
+  final TextStyle? style;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(4.0),
+      child: Text(text, style: style),
+    );
   }
 }

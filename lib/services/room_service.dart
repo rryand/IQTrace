@@ -11,8 +11,9 @@ class RoomService {
     try {
       final Map<int, List<Timelog>> timelogs = await _roomRepo.getAllTimelogs();
       return ApiResponse.completed(timelogs);
-    } catch (e) {
+    } catch (e, stacktrace) {
       print(e);
+      print(stacktrace);
       return ApiResponse.error(e.toString());
     }
   }

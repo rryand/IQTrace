@@ -20,42 +20,24 @@ class RoomRepository {
     );
   }
 
-  Future<Map<int, List<Timelog>>> getAllTimelogs() {
-    return Future.delayed(
-      const Duration(seconds: 5),
-      () {
-        return {
-          1: [
-            Timelog(
-              email: 'ramsesryandineros@gmail.com',
-              name: 'Ramses Ryan Dineros',
-              roomId: 1,
-              timestamp: DateTime.now(),
-            ),
-            Timelog(
-              email: 'russelldineros@gmail.com',
-              name: 'Russell Dineros',
-              roomId: 1,
-              timestamp: DateTime.now(),
-            ),
-          ],
-          2: [
-            Timelog(
-              email: 'ramsesryandineros@gmail.com',
-              name: 'Ramses Ryan Dineros',
-              roomId: 2,
-              timestamp: DateTime.now(),
-            ),
-            Timelog(
-              email: 'russelldineros@gmail.com',
-              name: 'Russell Dineros',
-              roomId: 2,
-              timestamp: DateTime.now(),
-            ),
-          ]
-        };
+  Future<Map<int, List<Timelog>>> getAllTimelogs() async {
+    final Map<String, dynamic> response = await _api.get('/timelog/all');
+
+    final Map<int, List<Timelog>> result = {};
+    response.forEach((roomNum, roomTimelogs) {
+      final resultRoomTimelogs = <Timelog>[];
+      final data = new List<dynamic>.from(roomTimelogs);
+
+      if (data.length > 0) {
+        data.forEach((timelog) {
+          resultRoomTimelogs.add(Timelog.fromJson(timelog));
+        });
       }
-    );
+
+      result[int.parse(roomNum)] = resultRoomTimelogs;
+    });
+
+    return result;
   }
 
   Future<void> addTimelog(Map<String, dynamic> timelog) async {
