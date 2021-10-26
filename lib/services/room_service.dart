@@ -20,7 +20,9 @@ class RoomService {
 
   Future<ApiResponse<void>> addTimelog(Map<String, dynamic> timelog) async {
     final user = await _userService.getUser();
+    print(timelog);
     try {
+      timelog['room_number'] = timelog['room_num'];
       timelog['user_email'] = user.email!;
       timelog['timestamp'] = DateTime.now().toIso8601String();
       await _roomRepo.addTimelog(timelog);

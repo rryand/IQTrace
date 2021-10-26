@@ -63,6 +63,7 @@ class UserService {
       final _userJson = await _userRepo.updateUser(
         fetchedUser.toJson(), _storage.token!);
       _user = User.fromJson(_userJson);
+      print(_user);
 
       return ApiResponse.completed(null);
     } catch (e, stacktrace) {

@@ -28,6 +28,17 @@ class QuarantineUpdateForm extends StatelessWidget {
             ],
             onChanged: (bool? value) => _setIsQuarantineState(value!),
           ),
+          Padding(padding: EdgeInsets.all(16.0)),
+          Text(
+            "I am aware that I am releasing pertinent medical information for "
+            "the purpose of prioritization of the COVID 19 RT-PCR as a "
+            "prerequisite for my work."
+          ),
+          Padding(padding: EdgeInsets.all(4.0)),
+          Text(
+            "I declare that all answers/information I have provided on this "
+            "questionnaire is true and accurate to the best of my knowledge."
+          ),
         ]
       ),
     );
