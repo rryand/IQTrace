@@ -231,7 +231,19 @@ class _RegistrationFormState extends State<RegistrationForm> {
             },
             onSaved: (value) => user.birthday = value!,
           ),
-          Padding(padding: EdgeInsetsDirectional.only(top: 24.0)),
+          Padding(padding: EdgeInsetsDirectional.only(top: 12.0)),
+          Text(
+            'In accordance with RA 10173 or Data Privacy Act of 2012, you '
+            'are allowing us to store the information you provide during '
+            'registration and contact tracing at the IQT entrances and '
+            'rooms labelled with IQT QR codes when you click on the "Next" '
+            'button.',
+            textAlign: TextAlign.justify,
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 12.0,
+            ),
+          ),
           _isLoading ? CircularProgressIndicator() : RegistrationFormButton(
             text: 'Next',
             onPressed: _onPressed,
