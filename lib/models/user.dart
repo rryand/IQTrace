@@ -12,6 +12,7 @@ class User {
   bool isAdmin;
   bool isVerified;
   DateTime? lastSurveyDate;
+  double? temp;
 
   String get name {
     return firstName! + ' ' + lastName!;
@@ -29,6 +30,7 @@ class User {
     this.isAdmin = false,
     this.isVerified = false,
     this.lastSurveyDate,
+    this.temp,
   });
 
   Map<String, dynamic> toJson() => {
@@ -45,6 +47,7 @@ class User {
     'last_survey_date': lastSurveyDate != null ? 
       DateHelper.formatDate(lastSurveyDate!) :
       null,
+    'temp': temp,
   };
 
   Map<String, dynamic> debugToJson() => {
@@ -68,6 +71,7 @@ class User {
       lastSurveyDate: user['last_survey_date'] != null ? 
         DateHelper.fromString(user['last_survey_date']) : 
         null,
+      temp: user['temp'] != null ? user['temp'] : null,
     );
   }
 }

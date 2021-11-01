@@ -30,7 +30,7 @@ class ActiveSymptomList extends StatelessWidget {
 
     final widgets = <Widget>[Padding(padding: EdgeInsets.only(top: 10))];
     usersWithSymptoms!.forEach((user) {
-      widgets.add(Text('User: ${user.name} | survey: ${user.survey}'));
+      widgets.add(Text('User: ${user.name} | survey: ${user.survey} | temp: ${user.temp}'));
       widgets.add(Divider());
     });
 
